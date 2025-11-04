@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Paint Shop Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Paint Shop Dashboard</h1>
+                <p class="app-subtitle" id="headerSubtitle">Dashboard</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p class="section-desc">Your inventory overview</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-label">Total Products</div>
+                        <div class="stat-value" id="totalProducts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-label">Total Stock</div>
+                        <div class="stat-value" id="totalStock">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-label">Low Stock</div>
+                        <div class="stat-value" id="lowStockCount">0</div>
+                    </div>
+                </div>
+
+                <div class="low-stock-section">
+                    <div class="section-subheader">
+                        <h3>Low Stock Items</h3>
+                        <span class="badge">< 5 pcs</span>
+                    </div>
+                    <div id="lowStockList" class="item-list"></div>
+                </div>
+            </section>
+
+            <!-- Inventory Section -->
+            <section id="inventory" class="section">
+                <div class="section-header">
+                    <h2>Inventory</h2>
+                    <p class="section-desc">Manage your products</p>
+                </div>
+                <input type="text" id="inventorySearch" class="search-input" placeholder="🔍 Search products...">
+                <div id="inventoryList" class="item-list"></div>
+            </section>
+
+            <!-- Sales Section -->
+            <section id="sales" class="section">
+                <div class="section-header">
+                    <h2>Record Sale</h2>
+                    <p class="section-desc">Add a product sale</p>
+                </div>
+                <div class="form-group">
+                    <label>Search Product</label>
+                    <input type="text" id="saleProductSearch" class="search-input" placeholder="🔍 Search by name or barcode...">
+                    <div id="saleProductSuggestions" class="suggestions-list"></div>
+                </div>
+
+                <div id="saleProductInfo" style="display: none;">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="saleProductName" readonly class="input-readonly">
+                    </div>
+                    <div class="form-group">
+                        <label>Current Stock</label>
+                        <input type="text" id="saleCurrentStock" readonly class="input-readonly">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity to Sell</label>
+                        <input type="number" id="saleQuantity" min="1" placeholder="Enter quantity" class="form-input">
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="recordSale()">Record Sale</button>
+                </div>
+            </section>
+
+            <!-- Procurement Section -->
+            <section id="procurement" class="section">
+                <div class="section-header">
+                    <h2>Procurement</h2>
+                    <p class="section-desc">Add stock and new products</p>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchProcurementTab('addStock')">Add Stock</button>
+                    <button class="tab-btn" onclick="switchProcurementTab('newProduct')">New Product</button>
+                </div>
+
+                <!-- Add Stock Tab -->
+                <div id="addStockTab" class="tab-content active">
+                    <div class="form-group">
+                        <label>Search Product</label>
+                        <input type="text" id="procProductSearch" class="search-input" placeholder="🔍 Search by name or barcode...">
+                        <div id="procProductSuggestions" class="suggestions-list"></div>
+                    </div>
+
+                    <div id="procProductInfo" style="display: none;">
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" id="procProductName" readonly class="input-readonly">
+                        </div>
+                        <div class="form-group">
+                            <label>Current Stock</label>
+                            <input type="text" id="procCurrentStock" readonly class="input-readonly">
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity to Add</label>
+                            <input type="number" id="procQuantity" min="1" placeholder="Enter quantity" class="form-input">
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="addStock()">Add Stock</button>
+                    </div>
+                </div>
+
+                <!-- New Product Tab -->
+                <div id="newProductTab" class="tab-content">
+                    <div class="form-group">
+                        <label>Barcode</label>
+                        <input type="text" id="newBarcode" placeholder="Enter barcode" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="newProductName" placeholder="Enter product name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="newCompanyName" placeholder="Enter company name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Initial Stock</label>
+                        <input type="number" id="newStock" min="1" placeholder="Enter quantity" class="form-input">
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="addNewProduct()">Add Product</button>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="section">
+                <div class="section-header">
+                    <h2>Reports</h2>
+                    <p class="section-desc">View sales and procurement history</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" id="reportStartDate" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" id="reportEndDate" class="form-input">
+                </div>
+                <button class="btn btn-secondary btn-full" onclick="filterReports()">Filter Reports</button>
+                <button class="btn btn-secondary btn-full" onclick="printReport()">Print Report</button>
+
+                <h3 class="report-title">Sales</h3>
+                <div id="salesReportList" class="report-list"></div>
+
+                <h3 class="report-title">Procurement</h3>
+                <div id="procurementReportList" class="report-list"></div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchSection('dashboard')" title="Dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('inventory')" title="Inventory">
+                <span class="nav-icon">📦</span>
+                <span class="nav-label">Inventory</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('sales')" title="Sales">
+                <span class="nav-icon">💰</span>
+                <span class="nav-label">Sales</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('procurement')" title="Procurement">
+                <span class="nav-icon">📥</span>
+                <span class="nav-label">Procurement</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('reports')" title="Reports">
+                <span class="nav-icon">📈</span>
+                <span class="nav-label">Reports</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-backdrop" onclick="closeConfirm()"></div>
+        <div class="modal-content">
+            <h2 id="confirmTitle">Confirm Action</h2>
+            <p id="confirmMessage"></p>
+            <input type="text" id="confirmInput" placeholder="Type CONFIRM to proceed" style="display: none;" class="form-input">
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeConfirm()">Cancel</button>
+                <button class="btn btn-danger" onclick="executeConfirm()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
