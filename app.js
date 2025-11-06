@@ -148,10 +148,6 @@ function deleteProduct(productId) {
   })
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("inventorySearch")?.addEventListener("input", renderInventory)
-})
-
 // ============================================
 // SALES
 // ============================================
@@ -164,31 +160,6 @@ function renderSales() {
   document.getElementById("saleProductSuggestions").innerHTML = ""
   selectedSaleProductId = null
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("saleProductSearch")?.addEventListener("input", (e) => {
-    const term = e.target.value.toLowerCase()
-    const db = getDB()
-    const suggestions = document.getElementById("saleProductSuggestions")
-
-    if (term.length < 1) {
-      suggestions.innerHTML = ""
-      return
-    }
-
-    const filtered = db.products.filter((p) => p.name.toLowerCase().includes(term) || p.barcode.includes(term))
-
-    suggestions.innerHTML = filtered
-      .map(
-        (p) => `
-            <div class="suggestion-item" onclick="selectSaleProduct('${p.id}', '${p.name}', ${p.stock})">
-                ${p.name} (${p.barcode})
-            </div>
-        `,
-      )
-      .join("")
-  })
-})
 
 function selectSaleProduct(productId, name, stock) {
   selectedSaleProductId = productId
@@ -261,31 +232,6 @@ function switchProcurementTab(tab) {
 function renderProcurement() {
   switchProcurementTab("addStock")
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("procProductSearch")?.addEventListener("input", (e) => {
-    const term = e.target.value.toLowerCase()
-    const db = getDB()
-    const suggestions = document.getElementById("procProductSuggestions")
-
-    if (term.length < 1) {
-      suggestions.innerHTML = ""
-      return
-    }
-
-    const filtered = db.products.filter((p) => p.name.toLowerCase().includes(term) || p.barcode.includes(term))
-
-    suggestions.innerHTML = filtered
-      .map(
-        (p) => `
-            <div class="suggestion-item" onclick="selectProcProduct('${p.id}', '${p.name}', ${p.stock})">
-                ${p.name} (${p.barcode})
-            </div>
-        `,
-      )
-      .join("")
-  })
-})
 
 function selectProcProduct(productId, name, stock) {
   selectedProcProductId = productId
@@ -492,4 +438,29 @@ function executeConfirm() {
 document.addEventListener("DOMContentLoaded", () => {
   initializeDB()
   renderDashboard()
+
+  const initialViewportHeight = window.innerHeight
+
+  // Handle virtual keyboard appearance
+  window.addEventListener("resize", () => {
+    const currentHeight = window.innerHeight
+    const keyboardHeight = initialViewportHeight - currentHeight
+
+    if (keyboardHeight > 100) {
+      // Keyboard is showing
+      document.body.style.paddingBottom = 100 + keyboardHeight + "px"
+    } else {
+      // Keyboard is hidden
+      document.body.style.paddingBottom = "100px"
+    }
+  })
+
+  // Handle focus on inputs
+  document.querySelectorAll("input, textarea").forEach((el) => {
+    el.addEventListener("focus", () => {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: "smooth", block: "center" })
+      }, 100)
+    })
+  })
 })

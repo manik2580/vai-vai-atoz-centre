@@ -179,29 +179,31 @@
             </section>
         </main>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="switchSection('dashboard')" title="Dashboard">
-                <span class="nav-icon">📊</span>
-                <span class="nav-label">Dashboard</span>
-            </button>
-            <button class="nav-item" onclick="switchSection('inventory')" title="Inventory">
-                <span class="nav-icon">📦</span>
-                <span class="nav-label">Inventory</span>
-            </button>
-            <button class="nav-item" onclick="switchSection('sales')" title="Sales">
-                <span class="nav-icon">💰</span>
-                <span class="nav-label">Sales</span>
-            </button>
-            <button class="nav-item" onclick="switchSection('procurement')" title="Procurement">
-                <span class="nav-icon">📥</span>
-                <span class="nav-label">Procurement</span>
-            </button>
-            <button class="nav-item" onclick="switchSection('reports')" title="Reports">
-                <span class="nav-icon">📈</span>
-                <span class="nav-label">Reports</span>
-            </button>
-        </nav>
+        <!-- Footer Navigation - Integrated into page layout -->
+        <footer class="app-footer">
+            <nav class="footer-nav">
+                <button class="footer-nav-item active" onclick="switchSection('dashboard')" title="Dashboard">
+                    <span class="footer-nav-icon">📊</span>
+                    <span class="footer-nav-label">Dashboard</span>
+                </button>
+                <button class="footer-nav-item" onclick="switchSection('inventory')" title="Inventory">
+                    <span class="footer-nav-icon">📦</span>
+                    <span class="footer-nav-label">Inventory</span>
+                </button>
+                <button class="footer-nav-item" onclick="switchSection('sales')" title="Sales">
+                    <span class="footer-nav-icon">💰</span>
+                    <span class="footer-nav-label">Sales</span>
+                </button>
+                <button class="footer-nav-item" onclick="switchSection('procurement')" title="Procurement">
+                    <span class="footer-nav-icon">📥</span>
+                    <span class="footer-nav-label">Procurement</span>
+                </button>
+                <button class="footer-nav-item" onclick="switchSection('reports')" title="Reports">
+                    <span class="footer-nav-icon">📈</span>
+                    <span class="footer-nav-label">Reports</span>
+                </button>
+            </nav>
+        </footer>
     </div>
 
     <!-- Toast Notification -->
